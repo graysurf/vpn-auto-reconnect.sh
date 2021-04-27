@@ -92,15 +92,16 @@ elif [[ $1 == "start" ]]; then
       host_pings_needed=true
       while $host_pings_needed; do
         host=${HOSTS[i]}
-        i=$(($i+1))
-        if [ $i -eq $host_length ]; then
+        i=$(($i+1 % $host_length))
+        if [ $i -eq 0 ]; then
           pingTest $host true
-        else 
+        else
           pingTest $host
         fi
       done
       vpn_index=0 # Prefer first
     fi
+    logStuff "$(date +%Y/%m/%d\ %H:%M:%S) -> sleep $DELAY..."
     sleep $DELAY
   done
 
